@@ -4,7 +4,7 @@ import Product from "./Product/Product";
 
 import useStyles from "./styles";
 
-const products = [
+const productsMock = [
   {
     id: 1,
     name: "Shoes",
@@ -23,7 +23,7 @@ const products = [
   },
 ];
 
-const Products = () => {
+const Products = ({ products }) => {
   const classes = useStyles();
 
   return (
