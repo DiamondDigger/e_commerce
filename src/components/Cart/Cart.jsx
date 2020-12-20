@@ -1,8 +1,9 @@
 import React from "react";
 import { Container, Grid, Typography, Button } from "@material-ui/core";
+import useStyles from "./styles";
 
 const Cart = ({ cart }) => {
-  const isEmpty = !cart.line_items.length();
+  const classes = useStyles();
 
   const EmptyCart = () => (
     <div>
@@ -21,7 +22,7 @@ const Cart = ({ cart }) => {
           </Grid>
         ))}
       </Grid>
-      <div>
+      <div className={classes.cardDetails}>
         <Typography>Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
         <Button
           className={classes.emptyButton}
@@ -45,11 +46,15 @@ const Cart = ({ cart }) => {
     </>
   );
 
+  if (!cart.line_items) {
+    return "Loading...";
+  }
+
   return (
     <Container>
       <div className={classes.toolbar} />
       <Typography variant="h3">Your shopping cart</Typography>
-      {isEmpty ? <EmptyCart /> : <FilledCart />}
+      {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
     </Container>
   );
 };
