@@ -27,7 +27,9 @@ const Cart = ({ cart }) => {
         ))}
       </Grid>
       <div className={classes.cardDetails}>
-        <Typography>Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
+        <Typography variant="h5">
+          Subtotal: {cart.subtotal.formatted_with_symbol}
+        </Typography>
         <Button
           className={classes.emptyButton}
           size="large"
@@ -57,7 +59,9 @@ const Cart = ({ cart }) => {
   return (
     <Container>
       <div className={classes.toolbar} />
-      <Typography variant="h3">Your shopping cart</Typography>
+      <Typography variant="h4" gutterBottom>
+        Your shopping cart
+      </Typography>
       {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
     </Container>
   );

@@ -17,27 +17,27 @@ const CartItem = ({ item }) => {
   console.log("**ITEM CART**", item);
 
   return (
-    <Card>
+    <Card className={classes.root}>
       <CardMedia
         image={item.media.source}
         alt={item.name}
         className={classes.media}
       />
-      <CardContent className={classes.cartContent}>
-        <Typography variant="h6">{item.name}</Typography>
-        <Typography variant="h5">{item.price.formatted_with_symbol}</Typography>
+      <CardContent className={classes.cardContent}>
+        <Typography variant="h5">{item.name}</Typography>
+        <Typography variant="h6">{item.price.formatted_with_symbol}</Typography>
       </CardContent>
-      <CardActions className={classes.cartActions}>
-        <div>
+      <CardActions className={classes.cardActions}>
+        <div className={classes.buttons}>
           <Button type="button" size="small">
             -
           </Button>
-          <Typography variant="h6">{item.quantity}</Typography>
+          <Typography>{item.quantity}</Typography>
           <Button type="button" size="small">
             +
           </Button>
         </div>
-        <Button type="button" color="primary" variant="contained">
+        <Button type="button" color="secondary" variant="contained">
           Remove
         </Button>
       </CardActions>
