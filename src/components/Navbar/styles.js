@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import { NoEncryption } from "@material-ui/icons";
 
 const drawerWidth = 0;
 
@@ -16,6 +17,7 @@ export default makeStyles((theme) => ({
   title: {
     display: "flex",
     alignItems: "center",
+    textDecoration: "none",
     flexGrow: 1,
   },
   image: {
