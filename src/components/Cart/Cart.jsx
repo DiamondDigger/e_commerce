@@ -13,7 +13,7 @@ const Cart = ({ cart }) => {
     </div>
   );
 
-  const FilledCart = (cart) => (
+  const FilledCart = () => (
     <>
       <Grid container spacing={3}>
         {cart.line_items.map((item) => (
