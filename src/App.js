@@ -20,25 +20,25 @@ const App = () => {
   const handleAddToCart = async (productId, quantity) => {
     const { cart } = await commerce.cart.add(productId, quantity);
 
-    setCart({ cart });
+    setCart(cart);
   };
 
   const handleUpdateCartQty = async (productId, quantity) => {
-    const { cart } = await commerce.cart.update(productId, quantity);
+    const { cart } = await commerce.cart.update(productId, { quantity }); // quantity is an object because it's not the only thing we want to update
 
-    setCart({ cart });
+    setCart(cart);
   };
 
   const handleRemoveFromCart = async (productId) => {
     const { cart } = await commerce.cart.remove(productId);
 
-    setCart({ cart });
+    setCart(cart);
   };
 
   const handleEmptyCart = async () => {
     const { cart } = await commerce.cart.empty();
 
-    setCart({ cart });
+    setCart(cart);
   };
 
   useEffect(() => {
@@ -59,7 +59,6 @@ const App = () => {
           <Route exact path="/cart">
             <Cart
               cart={cart}
-              handleAddToCart={handleAddToCart}
               handleUpdateCartQty={handleUpdateCartQty}
               handleRemoveFromCart={handleRemoveFromCart}
               handleEmptyCart={handleEmptyCart}
