@@ -23,13 +23,19 @@ const AddressForm = ({ checkoutToken }) => {
   const methods = useForm();
 
   const fetchShippingCountries = async (checkoutTokenId) => {
-    const countries = await commerce.services.localeListShippingCountries(
+    const { countries } = await commerce.services.localeListShippingCountries(
       checkoutTokenId
     );
 
     console.log("**FETCHED countries**", countries);
     setshippingCountries(countries);
   };
+
+  const countries = Object.entries(shippingCountries).map(([code, value]) => ({
+    id: code,
+    value,
+  }));
+  console.log("**FORMATTED countries**", countries);
 
   useEffect(() => {
     fetchShippingCountries(checkoutToken.id);
@@ -49,14 +55,20 @@ const AddressForm = ({ checkoutToken }) => {
             <FormInput required name="email" label="Email" />
             <FormInput required name="city" label="City" />
             <FormInput required name="zip" label="ZIP / Postal code" />
-            {/* <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Contry</InputLabel>
-              <Select value={} fullWidth onChange={}>
-                <MenuItem key={} value={}>
-                  Select Me
-                </MenuItem>
+            <Grid item xs={12} sm={6}>
+              <InputLabel>Shipping Country</InputLabel>
+              <Select
+                value={shippingCountry}
+                fullWidth
+                onChange={(e) => setshippingCountry(e.target.value)}
+              >
+                {countries.map((country) => (
+                  <MenuItem key={country.id} value={country.id}>
+                    {country.value}
+                  </MenuItem>
+                ))}
               </Select>
-              <InputLabel>Shipping Subdivision</InputLabel>
+              {/* <InputLabel>Shipping Subdivision</InputLabel>
               <Select value={} fullWidth onChange={}>
                 <MenuItem key={} value={}>
                   Select Me
@@ -67,8 +79,8 @@ const AddressForm = ({ checkoutToken }) => {
                 <MenuItem key={} value={}>
                   Select Me
                 </MenuItem>
-              </Select>
-            </Grid> */}
+              </Select> */}
+            </Grid>
           </Grid>
         </form>
       </FormProvider>
