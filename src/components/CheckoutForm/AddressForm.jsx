@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useForm, FormProvider } from "react-hook-form";
+import FormInput from "./CustomTextField";
 
 const AddressForm = () => {
   const methods = useForm();
@@ -20,7 +21,14 @@ const AddressForm = () => {
       </Typography>
       <FormProvider {...methods}>
         <form onSubmit={""}>
-          <Grid container spacing={3}></Grid>
+          <Grid container spacing={3}>
+            <FormInput required name="FirstName" label="First name" />
+            <FormInput required name="LastName" label="Last name" />
+            <FormInput required name="address1" label="Address" />
+            <FormInput required name="email" label="Email" />
+            <FormInput required name="city" label="City" />
+            <FormInput required name="zip" label="ZIP / Postal code" />
+          </Grid>
         </form>
       </FormProvider>
     </>
