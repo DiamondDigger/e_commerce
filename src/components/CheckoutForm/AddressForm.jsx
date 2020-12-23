@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   InputLabel,
@@ -10,8 +10,9 @@ import {
 } from "@material-ui/core";
 import { useForm, FormProvider } from "react-hook-form";
 import FormInput from "./CustomTextField";
+import { commerce } from "../../lib/commerce";
 
-const AddressForm = () => {
+const AddressForm = ({ checkoutToken }) => {
   const [shippingCountries, setshippingCountries] = useState([]);
   const [shippingCountry, setshippingCountry] = useState("");
   const [shippingSubdivisions, setshippingSubdivisions] = useState([]);
@@ -20,6 +21,19 @@ const AddressForm = () => {
   const [shippingOption, setshippingOption] = useState("");
 
   const methods = useForm();
+
+  const fetchShippingCountries = async (checkoutTokenId) => {
+    const countries = await commerce.services.localeListShippingCountries(
+      checkoutTokenId
+    );
+
+    console.log("**FETCHED countries**", countries);
+    setshippingCountries(countries);
+  };
+
+  useEffect(() => {
+    fetchShippingCountries(checkoutToken.id);
+  }, []);
 
   return (
     <>
@@ -35,7 +49,7 @@ const AddressForm = () => {
             <FormInput required name="email" label="Email" />
             <FormInput required name="city" label="City" />
             <FormInput required name="zip" label="ZIP / Postal code" />
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Contry</InputLabel>
               <Select value={} fullWidth onChange={}>
                 <MenuItem key={} value={}>
@@ -54,7 +68,7 @@ const AddressForm = () => {
                   Select Me
                 </MenuItem>
               </Select>
-            </Grid>
+            </Grid> */}
           </Grid>
         </form>
       </FormProvider>
