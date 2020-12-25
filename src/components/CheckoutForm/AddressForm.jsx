@@ -14,7 +14,7 @@ import { commerce } from "../../lib/commerce";
 
 const AddressForm = ({ checkoutToken }) => {
   const [shippingCountries, setShippingCountries] = useState([]);
-  const [shippingCountry, setShippingCountry] = useState(""); // country code - 'BY'
+  const [shippingCountry, setShippingCountry] = useState(""); //'BY'
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
   const [shippingSubdivision, setShippingSubdivision] = useState("");
   const [shippingOptions, setShippingOptions] = useState([]);
@@ -24,13 +24,13 @@ const AddressForm = ({ checkoutToken }) => {
 
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
-    name,
+    label: name,
   }));
 
   const subdivisions = Object.entries(shippingSubdivisions).map(
     ([code, name]) => ({
       id: code,
-      name,
+      label: name,
     })
   );
 
@@ -66,7 +66,7 @@ const AddressForm = ({ checkoutToken }) => {
         Shipping Address
       </Typography>
       <FormProvider {...methods}>
-        <form onSubmit={""}>
+        <form onSubmit="">
           <Grid container spacing={3}>
             <FormInput required name="FirstName" label="First name" />
             <FormInput required name="LastName" label="Last name" />
@@ -77,17 +77,17 @@ const AddressForm = ({ checkoutToken }) => {
             <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Country</InputLabel>
               <Select
-                name={shippingCountry}
+                value={shippingCountry}
                 fullWidth
-                onChange={(e) => setShippingCountry(e.target.name)}
+                onChange={(e) => setShippingCountry(e.target.value)}
               >
                 {countries.map((country) => (
                   <MenuItem key={country.id} value={country.id}>
-                    {country.name}
+                    {country.label}
                   </MenuItem>
                 ))}
               </Select>
-              {/* <InputLabel>Shipping Subdivision</InputLabel>
+              <InputLabel>Shipping Subdivision</InputLabel>
               <Select
                 value={shippingSubdivision}
                 fullWidth
@@ -95,10 +95,10 @@ const AddressForm = ({ checkoutToken }) => {
               >
                 {subdivisions.map((subdivision) => (
                   <MenuItem key={subdivision.id} value={subdivision.id}>
-                    {subdivision.name}
+                    {subdivision.label}
                   </MenuItem>
                 ))}
-              </Select> */}
+              </Select>
               {/* <InputLabel>Shipping Options</InputLabel>
               <Select value={} fullWidth onChange={}>
                 <MenuItem key={} value={}>
