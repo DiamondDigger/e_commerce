@@ -123,6 +123,8 @@ const AddressForm = ({ checkoutToken }) => {
                   </MenuItem>
                 ))}
               </Select>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Subdivision</InputLabel>
               <Select
                 value={shippingSubdivision}
@@ -135,6 +137,8 @@ const AddressForm = ({ checkoutToken }) => {
                   </MenuItem>
                 ))}
               </Select>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Options</InputLabel>
               <Select
                 value={shippingOption}
