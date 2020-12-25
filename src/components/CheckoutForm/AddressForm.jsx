@@ -22,6 +22,7 @@ const AddressForm = ({ checkoutToken }) => {
 
   const methods = useForm();
 
+  // contries/subdivisions/options
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
     label: name,
@@ -34,6 +35,14 @@ const AddressForm = ({ checkoutToken }) => {
     })
   );
 
+  const options = shippingOptions.map((sO) => ({
+    id: sO.id,
+    description: `${sO.description} - (${sO.price.formatted_with_symbol})`,
+  }));
+
+  console.log(options);
+
+  //fetching data from commerce js
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries } = await commerce.services.localeListShippingCountries(
       checkoutTokenId
@@ -52,6 +61,23 @@ const AddressForm = ({ checkoutToken }) => {
     setShippingSubdivision(Object.keys(subdivisions)[0]);
   };
 
+  const fetchShippingOptions = async (
+    checkoutTokenId,
+    country,
+    region = null
+  ) => {
+    const options = await commerce.checkout.getShippingOptions(
+      checkoutTokenId,
+      { country, region }
+    );
+
+    console.log("**FETCHED OPTIONS**", options);
+
+    setShippingOptions(options);
+    setShippingOption(options[0].id);
+  };
+
+  //calling fetch functions
   useEffect(() => {
     fetchShippingCountries(checkoutToken.id);
   }, []);
@@ -59,6 +85,15 @@ const AddressForm = ({ checkoutToken }) => {
   useEffect(() => {
     shippingCountry && fetchShippingSubdivisions(shippingCountry);
   }, [shippingCountry]);
+
+  useEffect(() => {
+    shippingSubdivision &&
+      fetchShippingOptions(
+        checkoutToken.id,
+        shippingCountry,
+        shippingSubdivision
+      );
+  }, [shippingSubdivision]);
 
   return (
     <>
@@ -99,12 +134,21 @@ const AddressForm = ({ checkoutToken }) => {
                   </MenuItem>
                 ))}
               </Select>
-              {/* <InputLabel>Shipping Options</InputLabel>
-              <Select value={} fullWidth onChange={}>
-                <MenuItem key={} value={}>
-                  Select Me
-                </MenuItem>
-              </Select> */}
+              <InputLabel>Shipping Options</InputLabel>
+              <Select
+                value={shippingOption}
+                fullWidth
+                onChange={(e) => setShippingOption(e.target.value)}
+              >
+                {options.map((option) =>
+                  console.log("option from JSX", option)
+                )}
+                {options.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.description}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
           </Grid>
         </form>
