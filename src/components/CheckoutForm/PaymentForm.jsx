@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Button, Divider } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import {
   Elements,
   CardElement,
@@ -10,7 +10,7 @@ import Review from "./Review";
 
 const stripePromise = loadStripe("stripePublicApiKey");
 
-const PaymentForm = ({ checkoutToken }) => {
+const PaymentForm = ({ checkoutToken, backStep }) => {
   return (
     <>
       <Review checkoutToken={checkoutToken} />
@@ -24,6 +24,25 @@ const PaymentForm = ({ checkoutToken }) => {
               <br />
               <br />
               <CardElement />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingTop: "20px",
+                }}
+              >
+                <Button variant="outlined" color="secondary" onClick={backStep}>
+                  Back
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={!stripe}
+                >
+                  Pay {checkoutToken.live.total.formatted_with_symbol}
+                </Button>
+              </div>
             </form>
           )}
         </ElementsConsumer>
