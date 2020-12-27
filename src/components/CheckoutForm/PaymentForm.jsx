@@ -8,9 +8,28 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import Review from "./Review";
 
-const stripePromise = loadStripe("stripePublicApiKey");
+const stripePromise = loadStripe(process.env.REACT_APP_CHEC_STRIPE_PUBLIC_KEY);
 
 const PaymentForm = ({ checkoutToken, backStep }) => {
+  const handleSubmit = (e, elements, stripe) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) return;
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+    });
+
+    if (error) {
+      console.log(error);
+    } else {
+      const orderData = {};
+    }
+  };
+
   return (
     <>
       <Review checkoutToken={checkoutToken} />
@@ -20,7 +39,7 @@ const PaymentForm = ({ checkoutToken, backStep }) => {
       <Elements stripe={stripePromise}>
         <ElementsConsumer>
           {(elements, stripe) => (
-            <form>
+            <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
               <br />
               <br />
               <CardElement />
