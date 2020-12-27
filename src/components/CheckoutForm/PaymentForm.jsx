@@ -10,7 +10,7 @@ import Review from "./Review";
 
 const stripePromise = loadStripe(process.env.REACT_APP_CHEC_STRIPE_PUBLIC_KEY);
 
-const PaymentForm = ({ checkoutToken, backStep }) => {
+const PaymentForm = ({ checkoutToken, shippingData, backStep }) => {
   const handleSubmit = (e, elements, stripe) => {
     e.preventDefault();
 
@@ -26,7 +26,28 @@ const PaymentForm = ({ checkoutToken, backStep }) => {
     if (error) {
       console.log(error);
     } else {
-      const orderData = {};
+      const orderData = {
+        line_items: checkoutToken.live.line_items,
+        customer: {
+          firstname: shippingData.firstName,
+          lastname: shippingData.lastName,
+          email: shippingData.email,
+        },
+        shipping: {
+          street: shippingData.address1,
+          town_city: shippingData.city,
+          country_state: shippingData.subdivision,
+          zip_postal_code: shippingData.zip,
+          country: shippingData.shippingCountry,
+        },
+        fulfilment: shippingData.shippingOption,
+        payment: {
+          gateway: "stripe",
+          stripe: {
+            payment_method_id: paymentMethod.id,
+          },
+        },
+      };
     }
   };
 
