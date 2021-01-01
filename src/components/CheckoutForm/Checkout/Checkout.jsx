@@ -77,12 +77,18 @@ const Checkout = ({ cart, onCaptureCheckout }) => {
                 <StepLabel className={classes.label}>{step}</StepLabel>
                 {
                   ((lastStep = !lastStep),
-                  lastStep && <div className={classes.verticalLine}></div>)
+                  lastStep ? (
+                    <div className={classes.verticalLine}></div>
+                  ) : undefined)
                 }
               </Step>
             ))}
           </Stepper>
-          {activeStep === steps.length ? <Confirmation /> : cart && <Form />}
+          {activeStep === steps.length ? (
+            <Confirmation />
+          ) : (
+            checkoutToken && <Form />
+          )}
         </Paper>
       </main>
     </>
