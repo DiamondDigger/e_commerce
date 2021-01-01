@@ -6,6 +6,9 @@ import {
   StepLabel,
   Button,
   Typography,
+  Divider,
+  Link,
+  CircularProgress,
 } from "@material-ui/core";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
@@ -15,7 +18,7 @@ import { commerce } from "../../../lib/commerce";
 
 const steps = ["Shipping address", "Payment details"];
 
-const Checkout = ({ cart, onCaptureCheckout }) => {
+const Checkout = ({ cart, onCaptureCheckout, order }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setcheckoutToken] = useState({});
   const [shippingData, setShippingData] = useState({});
@@ -30,7 +33,7 @@ const Checkout = ({ cart, onCaptureCheckout }) => {
           type: "cart",
         });
 
-        console.log("**Token**", token);
+        console.log("**GENERATE_Token**", token);
 
         setcheckoutToken(token);
       } catch (error) {}
@@ -44,12 +47,34 @@ const Checkout = ({ cart, onCaptureCheckout }) => {
 
   const next = (data) => {
     setShippingData(data);
-    console.log("GET SHIPPING DATA", data);
+    console.log("***GET SHIPPING DATA***", data);
 
     nextStep();
   };
 
-  const Confirmation = () => <div>Confirmation</div>;
+  const Confirmation = () =>
+    order.customer ? (
+      <div>
+        <Typography variant="h5">
+          Thank you for your purchase, {order.customer.firstname}
+          {order.customer.secondname}
+        </Typography>
+        <Divider />
+        <br />
+        <Typography variant="subtitle2">
+          Order ref: {order.customer_reference}
+        </Typography>
+        <br />
+        <Button component={Link} to="/" variant="outlined" color="secondary">
+          Back Home
+        </Button>
+      </div>
+    ) : (
+      <div className={classes.spinner}>
+        <CircularProgress />
+      </div>
+    );
+
   const Form = () =>
     activeStep === 0 ? (
       <AddressForm checkoutToken={checkoutToken} next={next} />

@@ -46,17 +46,22 @@ const App = () => {
   const refreshCart = async () => {
     const newCart = await commerce.cart.refresh();
 
+    console.log("NEW_CART", newCart);
+    console.log("REFRESHED_CART", cart);
     setCart(newCart);
   };
 
   const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
     try {
-      const incomingOrder = await commerce.checkout.retrieve(
+      const incomingOrder = await commerce.checkout.capture(
         checkoutTokenId,
         newOrder
       );
 
+      console.log("HANDLE_CHECKOUT");
+
       setOrder(incomingOrder);
+      console.log("***ORDER_INFO***", order);
       refreshCart();
     } catch (error) {
       setErrorMessage(error);
@@ -87,7 +92,11 @@ const App = () => {
             />
           </Route>
           <Route exact path="/checkout">
-            <Checkout cart={cart} onCaptureCheckout={handleCaptureCheckout} />
+            <Checkout
+              cart={cart}
+              onCaptureCheckout={handleCaptureCheckout}
+              order={order}
+            />
           </Route>
         </Switch>
       </div>

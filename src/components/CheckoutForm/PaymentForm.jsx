@@ -40,13 +40,16 @@ const PaymentForm = ({
           email: shippingData.email,
         },
         shipping: {
+          name: "International",
           street: shippingData.address1,
           town_city: shippingData.city,
           country_state: shippingData.subdivision,
           zip_postal_code: shippingData.zip,
           country: shippingData.shippingCountry,
         },
-        fulfillment: shippingData.shippingOption,
+        fulfillment: {
+          shipping_Method: shippingData.shippingOption,
+        },
         payment: {
           gateway: "stripe",
           stripe: {
@@ -62,7 +65,7 @@ const PaymentForm = ({
 
   return (
     <>
-      <Review checkoutToken={checkoutToken} />
+      <Review checkoutToken={checkoutToken} shippingData={shippingData} />
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>

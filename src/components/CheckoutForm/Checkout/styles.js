@@ -62,4 +62,8 @@ export default makeStyles((theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
+  spinner: {
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
