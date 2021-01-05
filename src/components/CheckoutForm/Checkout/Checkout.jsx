@@ -7,9 +7,9 @@ import {
   Button,
   Typography,
   Divider,
-  Link,
   CircularProgress,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
 
@@ -26,20 +26,24 @@ const Checkout = ({ cart, onCaptureCheckout, order }) => {
   const classes = useStyles();
   let lastStep = false;
 
+  console.log("order", order);
+
   useEffect(() => {
-    const generateToken = async () => {
-      try {
-        const token = await commerce.checkout.generateToken(cart.id, {
-          type: "cart",
-        });
+    if (cart.id) {
+      const generateToken = async () => {
+        try {
+          const token = await commerce.checkout.generateToken(cart.id, {
+            type: "cart",
+          });
 
-        console.log("**GENERATE_Token**", token);
+          console.log("**GENERATE_Token**", token);
 
-        setcheckoutToken(token);
-      } catch (error) {}
-    };
+          setcheckoutToken(token);
+        } catch (error) {}
+      };
 
-    generateToken();
+      generateToken();
+    }
   }, [cart]);
 
   const nextStep = () => setActiveStep((prev) => prev + 1);
@@ -54,21 +58,29 @@ const Checkout = ({ cart, onCaptureCheckout, order }) => {
 
   const Confirmation = () =>
     order.customer ? (
-      <div>
-        <Typography variant="h5">
-          Thank you for your purchase, {order.customer.firstname}
-          {order.customer.secondname}
-        </Typography>
+      <>
+        <div>
+          <Typography variant="h5">
+            Thank you for your purchase, {order.customer.firstname}{" "}
+            {order.customer.lastname}
+          </Typography>
+        </div>
         <Divider />
         <br />
         <Typography variant="subtitle2">
           Order ref: {order.customer_reference}
         </Typography>
         <br />
-        <Button component={Link} to="/" variant="outlined" color="secondary">
+        <Button
+          component={Link}
+          to="/"
+          type="button"
+          variant="outlined"
+          color="secondary"
+        >
           Back Home
         </Button>
-      </div>
+      </>
     ) : (
       <div className={classes.spinner}>
         <CircularProgress />
@@ -80,8 +92,8 @@ const Checkout = ({ cart, onCaptureCheckout, order }) => {
       <AddressForm checkoutToken={checkoutToken} next={next} />
     ) : (
       <PaymentForm
-        shippingData={shippingData}
         checkoutToken={checkoutToken}
+        shippingData={shippingData}
         nextStep={nextStep}
         backStep={previousStep}
         onCaptureCheckout={onCaptureCheckout}
@@ -101,10 +113,10 @@ const Checkout = ({ cart, onCaptureCheckout, order }) => {
               <Step key={step}>
                 <StepLabel className={classes.label}>{step}</StepLabel>
                 {
-                  ((lastStep = !lastStep),
-                  lastStep ? (
-                    <div className={classes.verticalLine}></div>
-                  ) : undefined)
+                  // ((lastStep = !lastStep),
+                  // lastStep ? (
+                  //   <div className={classes.verticalLine}></div>
+                  // ) : undefined)
                 }
               </Step>
             ))}

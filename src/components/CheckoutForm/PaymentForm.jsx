@@ -21,8 +21,10 @@ const PaymentForm = ({
     event.preventDefault();
 
     if (!stripe || !elements) return;
-
+    console.log("STRIPE _ ", stripe);
+    console.log("ELEMENTS _ ", elements);
     const cardElement = elements.getElement(CardElement);
+    console.log("ELEMENTS _ cardElement ", elements);
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -30,7 +32,7 @@ const PaymentForm = ({
     });
 
     if (error) {
-      console.log(error);
+      console.log("ERROR_PAYMENT", error);
     } else {
       const orderData = {
         line_items: checkoutToken.live.line_items,
@@ -48,7 +50,7 @@ const PaymentForm = ({
           country: shippingData.shippingCountry,
         },
         fulfillment: {
-          shipping_Method: shippingData.shippingOption,
+          shipping_method: shippingData.shippingOption,
         },
         payment: {
           gateway: "stripe",
@@ -58,6 +60,9 @@ const PaymentForm = ({
         },
       };
 
+      console.log("from payment ---onCaptureCheckout--");
+      console.log("ORDER_DATA", orderData);
+      console.log("CHECKOUT_TOKEN_ID", checkoutToken.id);
       onCaptureCheckout(checkoutToken.id, orderData);
       nextStep();
     }

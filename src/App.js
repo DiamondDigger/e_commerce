@@ -47,8 +47,8 @@ const App = () => {
     const newCart = await commerce.cart.refresh();
 
     console.log("NEW_CART", newCart);
-    console.log("REFRESHED_CART", cart);
     setCart(newCart);
+    console.log("REFRESHED_CART", cart);
   };
 
   const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {

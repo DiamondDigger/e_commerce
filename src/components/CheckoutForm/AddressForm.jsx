@@ -41,16 +41,18 @@ const AddressForm = ({ checkoutToken, next }) => {
     description: `${sO.description} - (${sO.price.formatted_with_symbol})`,
   }));
 
-  console.log(options);
+  console.log("*options*", options);
 
   //fetching data from commerce js
   const fetchShippingCountries = async (checkoutTokenId) => {
-    const { countries } = await commerce.services.localeListShippingCountries(
-      checkoutTokenId
-    );
+    if (checkoutTokenId) {
+      const { countries } = await commerce.services.localeListShippingCountries(
+        checkoutTokenId
+      );
 
-    setShippingCountries(countries);
-    setShippingCountry(Object.keys(countries)[0]);
+      setShippingCountries(countries);
+      setShippingCountry(Object.keys(countries)[0]);
+    } else console.log("token is not ready");
   };
 
   const fetchShippingSubdivisions = async (countryCode) => {
@@ -72,10 +74,11 @@ const AddressForm = ({ checkoutToken, next }) => {
       { country, region }
     );
 
-    console.log("**FETCHED OPTIONS**", options);
+    console.log("**SHIPPING_OPTIONS**", options);
 
     setShippingOptions(options);
     setShippingOption(options[0].id);
+    console.log("**SHIPPING_OPTION**", shippingOption);
   };
 
   //calling fetch functions
@@ -94,7 +97,7 @@ const AddressForm = ({ checkoutToken, next }) => {
         shippingCountry,
         shippingSubdivision
       );
-  }, [shippingSubdivision, checkoutToken, shippingCountry]);
+  }, [shippingSubdivision]);
 
   return (
     <>
@@ -113,8 +116,8 @@ const AddressForm = ({ checkoutToken, next }) => {
           )}
         >
           <Grid container spacing={3}>
-            <FormInput required name="FirstName" label="First name" />
-            <FormInput required name="LastName" label="Last name" />
+            <FormInput required name="firstName" label="First name" />
+            <FormInput required name="lastName" label="Last name" />
             <FormInput required name="address1" label="Address" />
             <FormInput required name="email" label="Email" />
             <FormInput required name="city" label="City" />
